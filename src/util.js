@@ -26,7 +26,9 @@ const casesTypeColours = {
 export const sortData = (data) => {
 	const sortedData = [...data];
 
+	// sort loops through all items in array, and compare then put them in descending order
 	return sortedData.sort((a, b) => (a.cases > b.cases ? -1 : 1));
+	// or,
 	// 	if (a.cases > b.cases) {
 	// 		return -1; //false
 	// 	} else {
@@ -36,7 +38,7 @@ export const sortData = (data) => {
 	// return sortedData;
 };
 
-export const prettyPrintStat = (stat) => (stat ? `+${numeral(stat).format("0.0a")}` : "+0");
+export const printNumbers = (stat) => (stat ? `+${numeral(stat).format("0.0a")}` : "+0");
 
 // Draw circles on the map with interactive tooltip
 export const showDataOnMap = (data, casesType = "cases") =>
@@ -59,3 +61,26 @@ export const showDataOnMap = (data, casesType = "cases") =>
 			</Popup>
 		</Circle>
 	));
+
+export const buildChartData = (data, casesType = "cases") => {
+	// if don't pass anytning, it would be 'cases' by default.
+	const chartData = [];
+	let lastDataPoint;
+
+	// console.log(data.cases);
+	for (let date in data.cases) {
+		if (lastDataPoint) {
+			let newDataPoint = {
+				x: date, // dat'e'
+				y: data[casesType][date] - lastDataPoint, // dat'a'
+				//to get daily's new cases, today's total - yesterday's total
+			};
+			// console.log(newDataPoint);
+			chartData.push(newDataPoint);
+		}
+		lastDataPoint = data[casesType][date];
+	}
+
+	// console.log(chartData);
+	return chartData;
+};

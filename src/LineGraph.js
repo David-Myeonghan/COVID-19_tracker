@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
+import { useCovidRecord } from "./api";
+import { buildChartData } from "./util";
 
 const options = {
 	legend: {
@@ -55,42 +57,33 @@ const options = {
 };
 
 function LineGraph({ casesType = "cases", ...props }) {
-	const [data, setData] = useState({});
+	const { loading, covidRecord, error } = useCovidRecord(casesType);
 
-	const buildChartData = (data, casesType = "cases") => {
-		// if don't pass anytning, it would be 'cases' by default.
-		const chartData = [];
-		let lastDataPoint;
+	// console.log(loading);
+	// console.log(covidRecord);
+	// console.log(error);
 
-		for (let date in data.cases) {
-			if (lastDataPoint) {
-				let newDataPoint = {
-					x: date,
-					y: data[casesType][date] - lastDataPoint,
-				};
-				chartData.push(newDataPoint);
-			}
-			lastDataPoint = data[casesType][date];
-		}
-		return chartData;
-	};
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+	// 			.then((response) => response.json())
+	// 			.then((data) => {
+	// 				let chartData = buildChartData(data, casesType);
+	// 				console.log(chartData);
+	// 				setData(chartData);
+	// 				console.log(data);
+	// 			});
+	// 	};
+	// 	fetchData();
+	// }, [casesType]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-				.then((response) => response.json())
-				.then((data) => {
-					let chartData = buildChartData(data, casesType);
-
-					setData(chartData);
-				});
-		};
-		fetchData();
-	}, [casesType]);
+	if (loading) {
+		return <p>loading...</p>;
+	}
 
 	return (
 		<div className={props.className}>
-			{data?.length > 0 && ( // if it exists, elegant way of error handling.
+			{covidRecord?.length > 0 && ( // if it exists, elegant way of error handling.
 				<Line
 					options={options}
 					data={{
@@ -98,7 +91,7 @@ function LineGraph({ casesType = "cases", ...props }) {
 							{
 								backgroundColor: "rgba(204, 100, 100)",
 								borderColor: "#CC1034",
-								data: data,
+								data: covidRecord,
 							},
 						],
 					}}
