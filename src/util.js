@@ -23,6 +23,7 @@ const casesTypeColours = {
 	},
 };
 
+// for displaying 'Live Cases by Country'
 export const sortData = (data) => {
 	const sortedData = [...data];
 
@@ -43,7 +44,7 @@ export const printNumbers = (stat) => (stat ? `+${numeral(stat).format("0.0a")}`
 // Draw circles on the map with interactive tooltip
 export const showDataOnMap = (data, casesType = "cases") =>
 	data.map((country) => (
-		<Circle
+		<Circle // in leaflet, use 'lat,long', not 'lat,lng'
 			center={[country.countryInfo.lat, country.countryInfo.long]}
 			fillOpacity={0.4}
 			color={casesTypeColours[casesType].hex}

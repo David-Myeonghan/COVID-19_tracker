@@ -80,6 +80,10 @@ function LineGraph({ casesType = "cases", ...props }) {
 		return <p>loading...</p>;
 	}
 
+	if (error) {
+		return <p>Something went swonf: {error.message}</p>;
+	}
+
 	return (
 		<div className={props.className}>
 			{covidRecord?.length > 0 && (

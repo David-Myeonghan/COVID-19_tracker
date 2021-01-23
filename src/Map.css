@@ -23,7 +23,8 @@
 }
 
 .info-flag {
-	height: 80px;
+	height: 100px;
+	/* height: 100%; */
 	width: 100%;
 	background-size: cover;
 	border-radius: 5px;
