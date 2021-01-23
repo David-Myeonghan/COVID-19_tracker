@@ -62,9 +62,6 @@ export const useCovidRecord = (casesType) => {
 			.then((data) => {
 				let chartData = buildChartData(data, casesType);
 				setCovidRecord(chartData);
-				// console.log(data);
-				// console.log(chartData);
-				console.log(covidRecord);
 				setLoading(false);
 			})
 			.catch((error) => {
@@ -72,8 +69,6 @@ export const useCovidRecord = (casesType) => {
 				setLoading(false);
 			});
 	}, [casesType]);
-
-	// console.log(covidRecord);
 
 	return { loading, covidRecord, error };
 };

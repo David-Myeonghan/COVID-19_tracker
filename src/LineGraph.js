@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import { useCovidRecord } from "./api";
-import { buildChartData } from "./util";
 
 const options = {
 	legend: {
@@ -83,7 +82,8 @@ function LineGraph({ casesType = "cases", ...props }) {
 
 	return (
 		<div className={props.className}>
-			{covidRecord?.length > 0 && ( // if it exists, elegant way of error handling.
+			{covidRecord?.length > 0 && (
+				// if it exists, elegant way of error handling. Same with covidRecord && covidRecord.length
 				<Line
 					options={options}
 					data={{

@@ -18,9 +18,10 @@ function App() {
 	const [countryInfo, setCountryInfo] = useState({});
 
 	const [tableData, setTableData] = useState([]);
-	const [mapCenter, setMapCenter] = useState({ lat: 34.80706, lng: -40.4796 });
-	const [mapZoom, setMapZoom] = useState(3);
+	const [mapCenter, setMapCenter] = useState({ lat: 37, lng: 127.5 });
+	const [mapZoom, setMapZoom] = useState(4);
 	const [mapCountries, setMapCountries] = useState([]);
+
 	const [casesType, setCasesType] = useState("cases");
 
 	const { loading, todayInfo, error } = useTodayInfo();
@@ -57,6 +58,7 @@ function App() {
 				const sortedData = sortData(data); // Sort by cases in descending order.
 				setTableData(sortedData);
 				setMapCountries(data);
+				console.log(data);
 				setCountries(countries); // Put all contries in the array, so that mapping out in Dropdown.
 				// // });
 			} catch (error) {
@@ -84,7 +86,7 @@ function App() {
 				setCountryInfo(data); // redundant?
 				console.log(countryInfo);
 
-				setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+				setMapCenter((countryCode = [data.countryInfo.lat, data.countryInfo.long]));
 				setMapZoom(4);
 			});
 	};
@@ -108,6 +110,7 @@ function App() {
 				<div className="app__stats">
 					<InfoBox
 						isRed
+						// if, in this box, casesType is "cases", this box will active
 						active={casesType === "cases"}
 						onClick={(e) => setCasesType("cases")}
 						title="Coronavirus cases"
@@ -138,7 +141,7 @@ function App() {
 				<CardContent>
 					<h3>Live Cases by Country</h3>
 					<Table countries={tableData} key={tableData.toString()} />
-					<h3 className="app__graphTitle">Worldwide New Cases</h3>
+					<h3 className="app__graphTitle">Worldwide New {casesType}</h3>
 					<LineGraph className="app__graph" casesType={casesType} />
 					{/* Graph */}
 				</CardContent>
