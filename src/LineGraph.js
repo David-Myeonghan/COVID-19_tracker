@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import { useCovidRecord } from "./api";
@@ -34,7 +34,7 @@ const options = {
 			{
 				type: "time",
 				time: {
-					format: "MM/DD/YY",
+					parser: "MM/DD/YY",
 					tooltipFormat: "ll",
 				},
 			},
@@ -58,24 +58,6 @@ const options = {
 function LineGraph({ casesType = "cases", ...props }) {
 	const { loading, covidRecord, error } = useCovidRecord(casesType);
 
-	// console.log(loading);
-	// console.log(covidRecord);
-	// console.log(error);
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-	// 			.then((response) => response.json())
-	// 			.then((data) => {
-	// 				let chartData = buildChartData(data, casesType);
-	// 				console.log(chartData);
-	// 				setData(chartData);
-	// 				console.log(data);
-	// 			});
-	// 	};
-	// 	fetchData();
-	// }, [casesType]);
-
 	if (loading) {
 		return <p>loading...</p>;
 	}
@@ -87,7 +69,7 @@ function LineGraph({ casesType = "cases", ...props }) {
 	return (
 		<div className={props.className}>
 			{covidRecord?.length > 0 && (
-				// if it exists, elegant way of error handling. Same with covidRecord && covidRecord.length
+				// if it exists, elegant way of error handling. Same with 'covidRecord && covidRecord.length'
 				<Line
 					options={options}
 					data={{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { buildChartData, sortData } from "./util";
 
 // In order to get Today's info, and each Country's info when clicked a country in dropdown on main page.
@@ -37,43 +37,6 @@ export const useCountryInfo = (url) => {
 	};
 };
 
-// export const getTodayInfo = async () => {
-// 	try {
-// 		const url = "https://disease.sh/v3/covid-19/all";
-// 		const response = await fetch(url);
-// 		const data = await response.json();
-// 		// console.log("data: ", data);
-
-// 		return data;
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// };
-
-// export const useTodayInfo = () => {
-// 	const [loading, setLoading] = useState(true);
-// 	const [todayInfo, setTodayInfo] = useState({});
-// 	const [error, setError] = useState(null);
-
-// 	useEffect(() => {
-// 		getTodayInfo()
-// 			.then((info) => {
-// 				setTodayInfo(info);
-// 				setLoading(false);
-// 			})
-// 			.catch((error) => {
-// 				setError(error);
-// 				setLoading(false);
-// 			});
-// 	}, []);
-
-// 	return {
-// 		loading,
-// 		todayInfo,
-// 		error,
-// 	};
-// };
-
 // In order to get the record for the last 120 days to draw line graph.
 const getCovidRecord = async () => {
 	try {
@@ -110,18 +73,20 @@ export const useCovidRecord = (casesType) => {
 	return { loading, covidRecord, error };
 };
 
-const getCountriesData = async () => {
+// In order to get country info to be used in drawing circles in map and also table.
+export const getCountriesData = async () => {
 	try {
 		const url = "https://disease.sh/v3/covid-19/countries";
 		const response = await fetch(url);
 		const data = await response.json(); // this also needs to be awaited!!
 
-		// Don't wanna use all of 'data', wanna restructure it.
+		// Don't wanna use all of 'data', wanna restructure it in way i want to use.
 		const countries = data.map((country) => ({
 			name: country.country,
 			value: country.countryInfo.iso2,
 		}));
-		const sortedData = sortData(data); // Sort by cases in descending order.
+		// Sort by cases in descending order.
+		const sortedData = sortData(data);
 
 		return { sortedData, countries };
 	} catch (error) {
@@ -130,18 +95,15 @@ const getCountriesData = async () => {
 };
 
 export const useCountriesData = () => {
-	const [loading2, setLoading] = useState(true);
+	const [loadingCountries, setLoading] = useState(true);
 	const [sortedData, setSortedData] = useState([]);
-	// const [data, setData] = useState({});
-	const [countries2, setCountries] = useState([]);
-	const [error2, setError] = useState(null);
+	const [mapCountries, setCountries] = useState([]);
+	const [errorCountries, setError] = useState(null);
 
 	useEffect(() => {
 		getCountriesData()
 			.then(({ sortedData, countries }) => {
-				// console.log(data);
 				setSortedData(sortedData);
-				// setData(data.data);
 				setCountries(countries);
 				setLoading(false);
 			})
@@ -152,10 +114,9 @@ export const useCountriesData = () => {
 	}, []);
 
 	return {
-		loading2,
+		loadingCountries,
 		sortedData,
-		// data,
-		countries2,
-		error2,
+		mapCountries,
+		errorCountries,
 	};
 };

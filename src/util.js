@@ -5,20 +5,14 @@ import { Circle, Popup } from "react-leaflet";
 const casesTypeColours = {
 	cases: {
 		hex: "#CC1034",
-		// rgb: "rgb(204, 16, 52)",
-		// half_op: "rgba(204, 16, 52, 0.5)",
 		multiplier: 400,
 	},
 	recovered: {
 		hex: "#7dd71d",
-		// rgb: "rgb(125, 215, 29)",
-		// half_op: "rgba(125, 215, 29, 0.5)",
 		multiplier: 700,
 	},
 	deaths: {
 		hex: "#fb4443",
-		// rgb: "rgb(251, 68, 67)",
-		// half_op: "rgba(251, 68, 67, 0.5)",
 		multiplier: 1000,
 	},
 };
@@ -45,6 +39,7 @@ export const printNumbers = (stat) => (stat ? `+${numeral(stat).format("0.0a")}`
 export const showDataOnMap = (data, casesType = "cases") =>
 	data.map((country) => (
 		<Circle // in leaflet, use 'lat,long', not 'lat,lng'
+			key={country.country}
 			center={[country.countryInfo.lat, country.countryInfo.long]}
 			fillOpacity={0.4}
 			color={casesTypeColours[casesType].hex}
@@ -68,7 +63,6 @@ export const buildChartData = (data, casesType = "cases") => {
 	const chartData = [];
 	let lastDataPoint;
 
-	// console.log(data.cases);
 	for (let date in data.cases) {
 		if (lastDataPoint) {
 			let newDataPoint = {
@@ -81,7 +75,5 @@ export const buildChartData = (data, casesType = "cases") => {
 		}
 		lastDataPoint = data[casesType][date];
 	}
-
-	// console.log(chartData);
 	return chartData;
 };

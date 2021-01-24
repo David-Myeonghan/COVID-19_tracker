@@ -4,15 +4,27 @@
 }
 
 .infoBox:not(:last-child) {
-	margin-right: 15px;
+	margin-right: 10px;
 }
 
 .infoBox--selected {
-	border-top: 10px solid greenyellow;
+	/* border-color: greenyellow; */
+	animation-name: mover;
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
 }
 
+@keyframes mover {
+	from {
+		border-top: 1px solid greenyellow;
+	}
+	to {
+		border-top: 8px solid greenyellow;
+	}
+}
 .infoBox--red {
-	border-color: red;
+	/* '!important' for not inheriting border-color */
+	border-color: red !important;
 }
 
 .infoBox__cases--green {
