@@ -9,3 +9,8 @@
         - SPA: yes
     - npm run build
     - firebase deploy
+
+# Enzyme
+
+    - mostly 'shallow'
+    - shallow:

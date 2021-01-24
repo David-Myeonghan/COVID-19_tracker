@@ -38,7 +38,7 @@ export const useCountryInfo = (url) => {
 };
 
 // In order to get the record for the last 120 days to draw line graph.
-const getCovidRecord = async () => {
+export const getCovidRecord = async () => {
 	try {
 		const url = "https://disease.sh/v3/covid-19/historical/all?lastdays=120";
 		const response = await fetch(url);
