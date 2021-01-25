@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MenuItem, FormControl, Select, Card, CardContent, Button } from "@material-ui/core";
+import { auth } from "./firebase";
 import { useCountryInfo, getCountryInfo, useCountriesData } from "./api";
 import numeral from "numeral";
 import InfoBox from "./InfoBox";
@@ -14,17 +15,37 @@ function Home({ history }) {
 	// STATE = How to write a variable in React
 	const [country, setCountry] = useState("worldwide");
 	const [url, setUrl] = useState("https://disease.sh/v3/covid-19/all");
-
 	const [mapCenter, setMapCenter] = useState({ lat: 34.8, lng: -40.4 });
 	const [mapZoom, setMapZoom] = useState(3);
-
 	const [casesType, setCasesType] = useState("cases");
+	const [user, setUser] = useState(null);
+	const [username, setUsername] = useState("");
 
 	const { loading, countryInfo, error } = useCountryInfo(url);
 	const { loadingCountries, sortedData, mapCountries, errorCountries } = useCountriesData();
 
+	useEffect(() => {
+		// listener
+		auth.onAuthStateChanged((user) => {
+			if (user) {
+				// user is signed in,
+				console.log(user);
+				setUser(user);
+			} else {
+				// user is signed out
+				setUser(null);
+				history.push("/login");
+			}
+		});
+	}, [user, username]);
+
 	const goSignUp = (event) => {
 		event.preventDefault();
+		history.push("/login");
+	};
+
+	const signOut = () => {
+		auth.signOut();
 		history.push("/login");
 	};
 
@@ -68,9 +89,14 @@ function Home({ history }) {
 			<div className="home__left">
 				<div className="home__header">
 					<h1>COVID-19 TRACKER</h1>
-					<Button variant="outlined" className="login__signup" onClick={goSignUp}>
-						Logout
-					</Button>
+					{user ? (
+						<Button variant="outlined" className="login__signup" onClick={signOut}>
+							Logout
+						</Button>
+					) : (
+						history.push("/login")
+					)}
+
 					<FormControl className="home__dropdown">
 						<Select variant="outlined" onChange={onCountryChange} value={country}>
 							{/* Loop through all the countries and show a dropdown list of the options */}

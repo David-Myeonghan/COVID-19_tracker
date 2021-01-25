@@ -15,3 +15,8 @@
     - Need to install JEST v.24.9.0 first in this CRA version, using 'npm i --dev-sav jest@24.9.0'
     - mostly 'shallow'
     - shallow:
+
+# Context API
+
+    - Using Context API, we don't actually need to use Redux for state management.
+    - https://www.youtube.com/watch?v=35lXWvCuM8o&ab_channel=DevEd

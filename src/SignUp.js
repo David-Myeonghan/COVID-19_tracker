@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, Button, TextField, Divider, Typography } from "@material-ui/core";
+import { auth } from "./firebase";
 import "./SignUp.css";
 
 function SignUp({ history, location, match }) {
@@ -10,8 +11,24 @@ function SignUp({ history, location, match }) {
 	const signUp = (event) => {
 		event.preventDefault();
 
+		auth
+			.createUserWithEmailAndPassword(email, password)
+			.then((userCredential) => {
+				// Signed in
+				return userCredential.user.updateProfile({
+					displayNAme: username,
+				});
+			})
+			.catch((error) => alert(error.message, error.code));
+
+		// Set to none after creating an account.
 		setEmail("");
 		setPassword("");
+
+		// go to main page..
+
+		// save userinfo in context,,?
+		history.push("/");
 	};
 
 	const goSignIn = (event) => {

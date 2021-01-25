@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { Card, CardContent, Button, TextField, Divider, Typography } from "@material-ui/core";
+import { auth } from "./firebase";
 import "./Login.css";
 
 function Login({ history, location, match }) {
-	// const [username, setUsername] = useState("");
+	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const signIn = (event) => {
 		event.preventDefault();
 
-		// auth.signInWithEmailAndPassword(email, password).catch((error) => alert(error.message));
+		auth
+			.signInWithEmailAndPassword(email, password)
+			.then((userCredential) => {
+				console.log(userCredential);
+			})
+			.catch((error) => alert(error.message, error.code));
 
+		// Set to none after creating an account.
 		setEmail("");
 		setPassword("");
+		history.push("/");
 	};
 
 	const goSignUp = (event) => {
