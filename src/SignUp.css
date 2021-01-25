@@ -1,0 +1,36 @@
+.signup {
+	width: 100vw;
+	height: 100vh;
+	background-image: url("./images/background.jpg");
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	/* min-height: 100vh; */
+}
+
+.signup__container {
+	/* position: "absolute"; */
+	width: 350px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 10px;
+	overflow: hidden;
+	align-items: center;
+	border: 1px solid #000;
+	padding: 50px 10px 15px 10px;
+}
+
+.signup__signin {
+	display: flex;
+	flex-direction: column;
+	width: 250px;
+	margin-bottom: 15px;
+}
+
+.signup__signup {
+	width: 250px;
+}
