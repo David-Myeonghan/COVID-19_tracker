@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { MenuItem, FormControl, Select, Card, CardContent, Button } from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import { MenuItem, FormControl, Select, Card, CardContent, Button, Typography } from "@material-ui/core";
 import { auth } from "./firebase";
+import { UserContext } from "./UserContext";
 import { useCountryInfo, getCountryInfo, useCountriesData } from "./api";
 import numeral from "numeral";
 import InfoBox from "./InfoBox";
@@ -10,43 +11,31 @@ import "./Home.css";
 import { printNumbers } from "./util";
 import LineGraph from "./LineGraph";
 import "leaflet/dist/leaflet.css";
+import { Link } from "react-router-dom";
 
 function Home({ history }) {
 	// STATE = How to write a variable in React
+	const [user, setUser] = useContext(UserContext);
 	const [country, setCountry] = useState("worldwide");
 	const [url, setUrl] = useState("https://disease.sh/v3/covid-19/all");
 	const [mapCenter, setMapCenter] = useState({ lat: 34.8, lng: -40.4 });
 	const [mapZoom, setMapZoom] = useState(3);
 	const [casesType, setCasesType] = useState("cases");
-	const [user, setUser] = useState(null);
-	const [username, setUsername] = useState("");
 
 	const { loading, countryInfo, error } = useCountryInfo(url);
 	const { loadingCountries, sortedData, mapCountries, errorCountries } = useCountriesData();
 
-	useEffect(() => {
-		// listener
-		auth.onAuthStateChanged((user) => {
-			if (user) {
-				// user is signed in,
-				console.log(user);
-				setUser(user);
-			} else {
-				// user is signed out
+	const signOut = () => {
+		auth
+			.signOut()
+			.then(() => {
+				// Sign-out successful.
 				setUser(null);
 				history.push("/login");
-			}
-		});
-	}, [user, username]);
-
-	const goSignUp = (event) => {
-		event.preventDefault();
-		history.push("/login");
-	};
-
-	const signOut = () => {
-		auth.signOut();
-		history.push("/login");
+			})
+			.catch((error) => {
+				// An error happened
+			});
 	};
 
 	const onCountryChange = async (event) => {
@@ -89,10 +78,12 @@ function Home({ history }) {
 			<div className="home__left">
 				<div className="home__header">
 					<h1>COVID-19 TRACKER</h1>
-					{user ? (
-						<Button variant="outlined" className="login__signup" onClick={signOut}>
-							Logout
-						</Button>
+					{user?.displayName ? (
+						<div className="home__login">
+							<h3>Hello, {user.displayName}</h3>
+
+							<Link onClick={signOut}>Logout</Link>
+						</div>
 					) : (
 						history.push("/login")
 					)}

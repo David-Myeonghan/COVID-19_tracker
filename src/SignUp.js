@@ -3,7 +3,7 @@ import { Card, CardContent, Button, TextField, Divider, Typography } from "@mate
 import { auth } from "./firebase";
 import "./SignUp.css";
 
-function SignUp({ history, location, match }) {
+function SignUp({ history }) {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -15,20 +15,23 @@ function SignUp({ history, location, match }) {
 			.createUserWithEmailAndPassword(email, password)
 			.then((userCredential) => {
 				// Signed in
-				return userCredential.user.updateProfile({
-					displayNAme: username,
+				userCredential.user.updateProfile({
+					displayName: username,
 				});
 			})
-			.catch((error) => alert(error.message, error.code));
+			.catch((error) => {
+				return alert(error.message, error.code);
+			});
 
 		// Set to none after creating an account.
 		setEmail("");
 		setPassword("");
+		setUsername("");
 
 		// go to main page..
 
 		// save userinfo in context,,?
-		history.push("/");
+		history.push("/"); // let user login again with new created login info.
 	};
 
 	const goSignIn = (event) => {

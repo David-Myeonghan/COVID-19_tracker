@@ -20,3 +20,4 @@
 
     - Using Context API, we don't actually need to use Redux for state management.
     - https://www.youtube.com/watch?v=35lXWvCuM8o&ab_channel=DevEd
+    - Downside: Every Component using Context API will be rendered again when somthing in the context is changed.

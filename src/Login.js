@@ -1,27 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Card, CardContent, Button, TextField, Divider, Typography } from "@material-ui/core";
 import { auth } from "./firebase";
+import { UserContext } from "./UserContext";
 import "./Login.css";
 
-function Login({ history, location, match }) {
-	const [username, setUsername] = useState("");
+function Login({ history }) {
+	const [user, setUser] = useContext(UserContext);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	useEffect(() => {
+		if (user) {
+			history.push("/");
+		}
+		console.log("login", user);
+	}, [user, history]);
 
 	const signIn = (event) => {
 		event.preventDefault();
 
 		auth
 			.signInWithEmailAndPassword(email, password)
-			.then((userCredential) => {
-				console.log(userCredential);
+			.then(({ user }) => {
+				console.log("here", user);
+				setUser(user);
 			})
 			.catch((error) => alert(error.message, error.code));
 
 		// Set to none after creating an account.
 		setEmail("");
 		setPassword("");
-		history.push("/");
+
+		if (user) {
+			history.push("/");
+		}
 	};
 
 	const goSignUp = (event) => {
@@ -36,7 +48,7 @@ function Login({ history, location, match }) {
 					Covid-19 Tracker
 				</Typography>
 				<CardContent>
-					<form className="login__signin" noValidate autoComplete="off">
+					<form className="login__signin">
 						<TextField
 							id="standard-basic"
 							label="email"

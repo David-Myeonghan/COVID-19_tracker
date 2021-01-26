@@ -80,6 +80,16 @@ html {
 	margin-bottom: 10px;
 }
 
+.home__login {
+	display: flex;
+	/* justify-content: space-evenly; */
+	/* margin-right: 10px; */
+}
+
+.home__login > h3 {
+	margin-right: 20px;
+}
+
 @media (max-width: 990px) {
 	.home {
 		flex-direction: column;
