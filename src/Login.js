@@ -18,7 +18,6 @@ function Login({ history }) {
 
 	const signIn = (event) => {
 		event.preventDefault();
-
 		auth
 			.signInWithEmailAndPassword(email, password)
 			.then(({ user }) => {

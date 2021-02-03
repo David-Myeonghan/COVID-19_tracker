@@ -28,8 +28,6 @@ function SignUp({ history }) {
 		setPassword("");
 		setUsername("");
 
-		// go to main page..
-
 		// save userinfo in context,,?
 		history.push("/"); // let user login again with new created login info.
 	};

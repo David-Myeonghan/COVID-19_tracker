@@ -21,3 +21,9 @@
     - Using Context API, we don't actually need to use Redux for state management.
     - https://www.youtube.com/watch?v=35lXWvCuM8o&ab_channel=DevEd
     - Downside: Every Component using Context API will be rendered again when somthing in the context is changed.
+
+# Todo
+
+    - Implement Google Login, on firebase and frontend.
+    - email authentication..?
+    - When login, or signup, show loader faster in order not to confuse the user if it's working.

@@ -20,7 +20,7 @@ export const UserProvider = (props) => {
 			}
 		});
 	}, [user]);
-	// user will not be required here as this component is using userContext...?
+	// [user] will not be required here as this component is using userContext...?
 
 	return <UserContext.Provider value={[user, setUser]}>{props.children}</UserContext.Provider>;
 };
